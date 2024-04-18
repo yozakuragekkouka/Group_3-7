@@ -24,6 +24,8 @@ private:
 	int BlockHandle[(int)MINO_TYPE::KIND_NUM + 1];
 	
 public:
+	~Mino();
+
 	void Init();
 	void Step();
 	void Fin();

@@ -16,7 +16,7 @@ void ScenePlay::Init()
 void ScenePlay::Step()
 {
 	mino.Step();
-	if (Input::PressAnyKey())
+	if (Input::IsKeyPush(KEY_INPUT_RETURN))
 	{
 		SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_FIN_PLAY;
 	}

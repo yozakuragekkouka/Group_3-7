@@ -7,6 +7,9 @@ constexpr int FIELD_SIZE_H = 22;
 constexpr int MINO_SIZE_W = 4;
 constexpr int MINO_SIZE_H = 4;
 
+constexpr int MINO_DEFAULT_POS_X = 2;
+constexpr int MINO_DEFAULT_POS_Y = 0;
+
 constexpr int NEXT_MINO_NUM = 3;
 
 constexpr int DROP_FRAME = 30;
@@ -37,7 +40,7 @@ enum class MINO_ANGLE
 };
 
 constexpr int FIELD_POS_X = SCREEN_SIZE_X / 2 - 200;
-constexpr int FIELD_POS_Y = 50;
+constexpr int FIELD_POS_Y = 5;
 
 constexpr int BLOCK_IMAGE_SIZE = 32;
 
