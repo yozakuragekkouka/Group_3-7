@@ -15,16 +15,25 @@ private:
 	int currentPosX;
 	int currentPosY;
 
+	int dropCount;
 	int stopCount;
 	int currentSpeed;
 
 	std::random_device randomer;
 
+	int BlockHandle[(int)MINO_TYPE::KIND_NUM + 1];
+	
 public:
 	void Init();
 	void Step();
 	void Fin();
 
+	void FieldDraw();
+
 	void MinoReset();
+	void MinoStop();
 	bool MinoHit(int minoPosX, int minoPosY, MINO_ANGLE minoAngle);
+
+	bool DeleteJudge(int JudgeHeight);
+	void Delete(int JudgeHeight);
 };
