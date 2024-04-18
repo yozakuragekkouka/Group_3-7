@@ -1,4 +1,5 @@
 #pragma once
+#include "../../Common.h"
 
 constexpr int FIELD_SIZE_W = 14;
 constexpr int FIELD_SIZE_H = 22;
@@ -7,6 +8,9 @@ constexpr int MINO_SIZE_W = 4;
 constexpr int MINO_SIZE_H = 4;
 
 constexpr int NEXT_MINO_NUM = 3;
+
+constexpr int DROP_FRAME = 30;
+constexpr int STOP_NUM = 3;
 
 enum class MINO_TYPE
 {
@@ -31,6 +35,24 @@ enum class MINO_ANGLE
 
     KIND_NUM
 };
+
+constexpr int FIELD_POS_X = SCREEN_SIZE_X / 2 - 200;
+constexpr int FIELD_POS_Y = 50;
+
+constexpr int BLOCK_IMAGE_SIZE = 32;
+
+constexpr char BLOCK_IMAGE_PATH[(int)MINO_TYPE::KIND_NUM][128] =
+{
+    "Data/Block/仮テトリス(32).png",
+    "Data/Block/仮テトリス(32).png",
+    "Data/Block/仮テトリス(32).png",
+    "Data/Block/仮テトリス(32).png",
+    "Data/Block/仮テトリス(32).png",
+    "Data/Block/仮テトリス(32).png",
+    "Data/Block/仮テトリス(32).png",
+};
+
+constexpr char WALL_BLOCK_IMAGE_PATH[128] = "Data/Block/仮テトリス(32).png";
 
 constexpr bool minoShapes[(int)MINO_TYPE::KIND_NUM][(int)MINO_ANGLE::KIND_NUM][MINO_SIZE_W][MINO_SIZE_H] =
 {
@@ -258,3 +280,5 @@ constexpr bool minoShapes[(int)MINO_TYPE::KIND_NUM][(int)MINO_ANGLE::KIND_NUM][M
     }
 }
 };
+
+
