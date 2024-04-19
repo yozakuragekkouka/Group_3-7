@@ -5,7 +5,7 @@
 enum BGM_KIND
 {
 	BGM_NONE = -1,
-	BGM_A,
+	BGM_,
 
 	BGM_NUM
 };
