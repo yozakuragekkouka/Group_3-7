@@ -89,7 +89,8 @@ void Mino::Step()
 		}
 		else
 		{
-			for (int xMove = -1; xMove <= 1; xMove++)
+			bool NewAngle_Success = false;
+			for (int xMove = 1; xMove >= -2; xMove--)
 			{
 				for (int yMove = -1; yMove <= 1; yMove++)
 				{
@@ -98,8 +99,13 @@ void Mino::Step()
 						currentPosX += xMove;
 						currentPosY += yMove;
 						currentAngle = (MINO_ANGLE)newAngle;
+
+						NewAngle_Success = true;
+						break;
 					}
 				}
+				if (NewAngle_Success)
+					break;
 			}
 		}
 	}
@@ -117,7 +123,8 @@ void Mino::Step()
 		}
 		else
 		{
-			for (int xMove = 1; xMove >= -1; xMove--)
+			bool NewAngle_Success = false;
+			for (int xMove = -1; xMove <= 2; xMove++)
 			{
 				for (int yMove = -1; yMove <= 1; yMove++)
 				{
@@ -126,12 +133,17 @@ void Mino::Step()
 						currentPosX += xMove;
 						currentPosY += yMove;
 						currentAngle = (MINO_ANGLE)newAngle;
+
+						NewAngle_Success = true;
+						break;
 					}
 				}
+				if (NewAngle_Success)
+					break;
 			}
 		}
 	}
-
+		
 	if (dropCount >= DROP_FRAME - currentSpeed)
 	{
 		if (MinoHit(currentPosX, currentPosY + 1, currentAngle))
@@ -158,6 +170,7 @@ void Mino::Step()
 			if (DeleteJudge(i))
 			{
 				Delete(i);
+				i++;
 			}
 		}
 		MinoReset();
@@ -280,6 +293,7 @@ bool Mino::MinoHit(int minoPosX, int minoPosY, MINO_ANGLE minoAngle)
 			{
 				return true;
 			}
+			
 		}
 	}
 	return false;

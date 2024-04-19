@@ -46,13 +46,13 @@ constexpr int BLOCK_IMAGE_SIZE = 32;
 
 constexpr char BLOCK_IMAGE_PATH[(int)MINO_TYPE::KIND_NUM][128] =
 {
+    "Data/Block/Iブロック(32).png",
     "Data/Block/仮テトリス(32).png",
-    "Data/Block/仮テトリス(32).png",
-    "Data/Block/仮テトリス(32).png",
-    "Data/Block/仮テトリス(32).png",
-    "Data/Block/仮テトリス(32).png",
-    "Data/Block/仮テトリス(32).png",
-    "Data/Block/仮テトリス(32).png",
+    "Data/Block/Sブロック(32).png",
+    "Data/Block/Zブロック(32).png",
+    "Data/Block/Jブロック(32).png",
+    "Data/Block/Lブロック(32).png",
+    "Data/Block/Tブロック(32).png",
 };
 
 constexpr char WALL_BLOCK_IMAGE_PATH[128] = "Data/Block/仮テトリス(32).png";
