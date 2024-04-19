@@ -25,6 +25,7 @@ void ScenePlay::Step()
 //プレイシーン描画処理
 void ScenePlay::Draw()
 {
+	mino.PredictionDraw();
 	mino.FieldDraw();
 }
 

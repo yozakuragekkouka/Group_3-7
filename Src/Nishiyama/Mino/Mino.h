@@ -15,6 +15,10 @@ private:
 	int currentPosX;
 	int currentPosY;
 
+	int LmoveCount;
+	int RmoveCount;
+	int accelerationCount;
+
 	int dropCount;
 	int stopCount;
 	int currentSpeed;
@@ -30,6 +34,7 @@ public:
 	void Step();
 	void Fin();
 
+	void PredictionDraw();
 	void FieldDraw();
 
 	void MinoReset();

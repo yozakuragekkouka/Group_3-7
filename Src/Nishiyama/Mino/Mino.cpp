@@ -48,6 +48,10 @@ void Mino::Init()
 
 	MinoReset();
 
+	LmoveCount = 0;
+	RmoveCount = 0;
+	accelerationCount = 0;
+
 	dropCount = 0;
 	stopCount = 0;
 	currentSpeed = 1;
@@ -61,20 +65,67 @@ void Mino::Init()
 
 void Mino::Step()
 {
-	if (Input::IsKeyPush(KEY_INPUT_A))
+	//ç∂à⁄ìÆ
+	if (Input::IsKeyDown(KEY_INPUT_A))
 	{
-		if (!MinoHit(currentPosX - 1, currentPosY, currentAngle))
+		if (LmoveCount >= MOVE_FRAME)
 		{
-			currentPosX--;
+			if (!MinoHit(currentPosX - 1, currentPosY, currentAngle))
+			{
+				currentPosX--;
+			}
+			LmoveCount = 0;
+		}
+		else
+		{
+			LmoveCount++;
 		}
 	}
-	if (Input::IsKeyPush(KEY_INPUT_D))
+	else
 	{
-		if (!MinoHit(currentPosX + 1, currentPosY, currentAngle))
+		LmoveCount = MOVE_FRAME;
+	}
+	//âEà⁄ìÆ
+	if (Input::IsKeyDown(KEY_INPUT_D))
+	{
+		if (RmoveCount >= MOVE_FRAME)
 		{
-			currentPosX++;
+			if (!MinoHit(currentPosX + 1, currentPosY, currentAngle))
+			{
+				currentPosX++;
+			}
+			RmoveCount = 0;
+		}
+		else
+		{
+			RmoveCount++;
 		}
 	}
+	else
+	{
+		RmoveCount = MOVE_FRAME;
+	}
+	//â¡ë¨
+	if (Input::IsKeyDown(KEY_INPUT_S))
+	{
+		if (accelerationCount >= ACCELERATION_FRAME)
+		{
+			if (!MinoHit(currentPosX, currentPosY + 1, currentAngle))
+			{
+				currentPosY++;
+			}
+			accelerationCount = 0;
+		}
+		else
+		{
+			accelerationCount++;
+		}
+	}
+	else
+	{
+		accelerationCount = ACCELERATION_FRAME;
+	}
+	//âEâÒì]
 	if (Input::IsKeyPush(KEY_INPUT_E))
 	{
 		int newAngle = (int)currentAngle - 1;
@@ -109,6 +160,7 @@ void Mino::Step()
 			}
 		}
 	}
+	//ç∂âÒì]
 	if (Input::IsKeyPush(KEY_INPUT_Q))
 	{
 		int newAngle = (int)currentAngle + 1;
@@ -143,7 +195,31 @@ void Mino::Step()
 			}
 		}
 	}
-		
+
+	//ë¶óéâ∫
+	if (Input::IsKeyPush(KEY_INPUT_W))
+	{
+		if (MinoHit(currentPosX, currentPosY + 1, currentAngle))
+		{
+			stopCount = STOP_NUM;
+			dropCount = -1;
+		}
+		else
+		{
+			for (int i = currentPosY; i < FIELD_SIZE_H; i++)
+			{
+				if (MinoHit(currentPosX, i, currentAngle))
+				{
+					currentPosY = i - 1;
+					stopCount = STOP_NUM;
+					dropCount = -1;
+					break;
+				}
+			}
+		}
+	}
+	
+
 	if (dropCount >= DROP_FRAME - currentSpeed)
 	{
 		if (MinoHit(currentPosX, currentPosY + 1, currentAngle))
@@ -152,15 +228,19 @@ void Mino::Step()
 		}
 		else
 		{
-			currentPosY++;
+			if (!Input::IsKeyDown(KEY_INPUT_S))
+			{
+				currentPosY++;
+			}
 			stopCount = 0;
 		}
 		dropCount = 0;
 	}
 	else
-	{
+	{	
 		dropCount++;
 	}
+	
 	
 	if (stopCount >= STOP_NUM)
 	{
@@ -186,6 +266,57 @@ void Mino::Fin()
 	}
 }
 
+void Mino::PredictionDraw()
+{
+	if (MinoHit(currentPosX, currentPosY + 1, currentAngle))
+	{
+		for (int H_index = 0; H_index < MINO_SIZE_H; H_index++)
+		{
+			for (int W_index = 0; W_index < MINO_SIZE_W; W_index++)
+			{
+				if (minoShapes[(int)currentMino][(int)currentAngle][W_index][H_index] == true)
+				{
+					SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+					DrawExtendGraph(FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1) * (currentPosX + W_index),
+						FIELD_POS_Y + (BLOCK_IMAGE_SIZE + 1) * (currentPosY + H_index),
+						FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1) * (currentPosX + W_index + 1),
+						FIELD_POS_Y + (BLOCK_IMAGE_SIZE + 1) * (currentPosY + H_index + 1),
+						BlockHandle[(int)currentMino],
+						true);
+					SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+				}
+			}
+		}
+	}
+	else
+	{
+		for (int PreY = currentPosY; PreY < FIELD_SIZE_H; PreY++)
+		{
+			if (MinoHit(currentPosX, PreY, currentAngle))
+			{
+				for (int H_index = 0; H_index < MINO_SIZE_H; H_index++)
+				{
+					for (int W_index = 0; W_index < MINO_SIZE_W; W_index++)
+					{
+						if (minoShapes[(int)currentMino][(int)currentAngle][W_index][H_index] == true)
+						{
+							SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
+							DrawExtendGraph(FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1) * (currentPosX + W_index),
+								FIELD_POS_Y + (BLOCK_IMAGE_SIZE + 1) * (PreY - 1 + H_index),
+								FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1) * (currentPosX + W_index + 1),
+								FIELD_POS_Y + (BLOCK_IMAGE_SIZE + 1) * (PreY - 1 + H_index + 1),
+								BlockHandle[(int)currentMino],
+								true);
+							SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+						}
+					}
+				}
+				break;
+			}
+		}
+	}
+}
+
 void Mino::FieldDraw()
 {
 	bool Draw_Buf_field[FIELD_SIZE_W][FIELD_SIZE_H];
@@ -208,6 +339,28 @@ void Mino::FieldDraw()
 		}
 	}
 
+	//ê¸ÇÃï`âÊ
+	SetDrawBlendMode(DX_BLENDMODE_ALPHA, 30);
+	for (int i = 0; i < FIELD_SIZE_W; i++)
+	{
+		DrawLine(FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1) * i,
+			FIELD_POS_Y,
+			FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1)* i,
+			FIELD_POS_Y + BLOCK_IMAGE_SIZE * FIELD_SIZE_H,
+			GetColor(255, 255, 255));
+	}
+	for (int i = 0; i < FIELD_SIZE_H; i++)
+	{
+		DrawLine(FIELD_POS_X,
+			FIELD_POS_Y + (BLOCK_IMAGE_SIZE + 1) * i,
+			FIELD_POS_X + BLOCK_IMAGE_SIZE * FIELD_SIZE_W,
+			FIELD_POS_Y + (BLOCK_IMAGE_SIZE + 1) * i,
+			GetColor(255, 255, 255));
+	}
+	
+	SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+
+	//ÉuÉçÉbÉNÇÃï`âÊ
 	for (int i = 0; i < FIELD_SIZE_H; i++)
 	{
 		for (int j = 0; j < FIELD_SIZE_W; j++)

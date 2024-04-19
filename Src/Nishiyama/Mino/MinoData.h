@@ -12,6 +12,9 @@ constexpr int MINO_DEFAULT_POS_Y = 0;
 
 constexpr int NEXT_MINO_NUM = 3;
 
+constexpr int MOVE_FRAME = 5;
+constexpr int ACCELERATION_FRAME = 5;
+
 constexpr int DROP_FRAME = 30;
 constexpr int STOP_NUM = 3;
 
