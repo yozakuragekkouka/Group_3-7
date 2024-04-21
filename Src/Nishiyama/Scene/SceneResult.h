@@ -14,3 +14,10 @@ public:
 
 	void Fin();
 };
+
+//ƒŠƒUƒ‹ƒg‰æ–ÊŠÖ˜A
+struct ResultInfo
+{
+	int BlackHandle;
+	int scoae;
+};

@@ -27,6 +27,8 @@ struct TitleInfo
 	bool PlaySceneFlag;           //PLAYSCENEに行くためのフラグ
 	int PlaySceneStopcount;       //PLAYSCENEに行くまでの秒数
 	int Titlecount;               //アクションする秒数(演出)
+
+	int scoae;
 };
 
 //タイトル構造体
