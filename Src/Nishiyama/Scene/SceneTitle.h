@@ -20,6 +20,10 @@ public:
 struct TitleInfo
 {
 	int TitleHndl;                //タイトル画面
+	int TitleRogoHndl;            //タイトルロゴ
+	int TitleRogox;               //タイトルロゴX座標
+	int TitleRogoy;               //タイトルロゴY座標
+	int alphaNum;                 //タイトルロゴ透明度
 	bool PlaySceneFlag;           //PLAYSCENEに行くためのフラグ
 	int PlaySceneStopcount;       //PLAYSCENEに行くまでの秒数
 	int Titlecount;               //アクションする秒数(演出)
@@ -46,4 +50,5 @@ struct TitleMino
 	int Imino;
 	int x[7];
 	int y[7];
+	int alphaNum[7];
 };

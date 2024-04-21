@@ -15,6 +15,12 @@ enum SE_KIND
 {
 	SE_NONE = -1,
 	SE_A,
+	SE_FirstRogo,
+	SE_Rogo,
+	SE_RorEMINO,
+	SE_REVOLUTION_MINO,
+	SE_ESTABLISHMENT_MINO,
+	SE_ENTER_MINO,
 
 	SE_NUM
 };
