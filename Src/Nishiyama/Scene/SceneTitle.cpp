@@ -25,7 +25,9 @@ TitleInfo titleInfo;
 PlayRogoInfo playrogoInfo;
 TitleMino titlemino;
 
-SE_KIND FirstRogoSE = SE_KIND::SE_FirstRogo;   //FirstRogo
+SE_KIND FirstRogoSE = SE_KIND::SE_FirstRogo;   //タイトルロゴ最初 SE
+SE_KIND RogoSE = SE_KIND::SE_Rogo;             //タイトルロゴ登場時 SE
+SE_KIND ENTERSE = SE_KIND::SE_ENTER_MINO;     //決定ボタン
 SoundEffect SEe;
 
 //タイトル初期化
@@ -90,16 +92,22 @@ void SceneTitle::Step()
 	if (titleInfo.PlaySceneFlag == true)   //フラグが立った
 	{
 		titleInfo.PlaySceneStopcount++;   //カウントを増やす
+		if (titleInfo.PlaySceneStopcount == 1) {
+			SEe.Play(ENTERSE);      //SE処理
+		}
 		if (titleInfo.PlaySceneStopcount <= 10) {
 			playrogoInfo.Playrogocount = 0;    //カウントを戻す
 		}
-		if (titleInfo.PlaySceneStopcount >= 100) {
+		if (titleInfo.PlaySceneStopcount >= 90) {
 			SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_FIN_TITLE;  //FINへ
 		}
 	}
 	//SE処理
 	if (titleInfo.Titlecount == 10) {
-		SEe.Play(FirstRogoSE);
+		SEe.Play(FirstRogoSE);          //タイトルロゴ最初 SE処理
+	}
+	if (titleInfo.TitleRogoy == 250) {
+		SEe.Play(RogoSE);               //タイトルロゴ登場時 SE処理
 	}
 
 }
@@ -167,7 +175,7 @@ void SceneTitle::Fin()
 	titleInfo.PlaySceneFlag = false;
 	playrogoInfo.Playrogocount = 0;
 	//SE破棄
-	
+	SEe.Fin();
 
 
 	SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_INIT_PLAY;

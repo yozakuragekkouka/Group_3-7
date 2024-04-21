@@ -6,6 +6,7 @@ enum BGM_KIND
 {
 	BGM_NONE = -1,
 	BGM_,
+	BGM_PLAY,
 
 	BGM_NUM
 };
