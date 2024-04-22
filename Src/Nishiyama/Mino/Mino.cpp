@@ -1,5 +1,6 @@
 #include "../Input/Input.h"
 #include "Mino.h"
+#include "../Score/Score.h"
 
 Mino::~Mino()
 {
@@ -41,6 +42,10 @@ void Mino::Init()
 	{
 		newMino[i] = (MINO_TYPE)(randomer() % (int)MINO_TYPE::KIND_NUM);
 	}
+
+	keepMino = MINO_TYPE::TYPE_NONE;
+	keepUseFlag = false;
+
 	currentMino = MINO_TYPE::TYPE_NONE;
 	currentAngle = MINO_ANGLE::ANGLE_0;
 	currentPosX = MINO_DEFAULT_POS_X;
@@ -61,6 +66,13 @@ void Mino::Init()
 	renCount = 0;
 	doujiCount = 0;
 
+	gameOverFlag = false;
+
+	UI_Number.Init();
+	UI_Number.SetNumberFont(Number_16_32_blue);
+	UI_Number.Set_posX(NEXT_MINO_POS_X);
+	UI_Number.Set_posY(NEXT_MINO_POS_Y + 500);
+
 	for (int i = 0; i < (int)MINO_TYPE::KIND_NUM; i++)
 	{
 		BlockHandle[i] = LoadGraph(BLOCK_IMAGE_PATH[i]);
@@ -75,6 +87,35 @@ void Mino::Init()
 
 void Mino::Step()
 {
+	if (gameOverFlag)
+		return;
+
+	//ƒL[ƒv
+	if (keepUseFlag == false)
+	{
+		if (Input::IsKeyPush(KEY_INPUT_R))
+		{
+			if (keepMino == MINO_TYPE::TYPE_NONE)
+			{
+				keepMino = currentMino;
+				MinoReset();
+				keepUseFlag = true;
+			}
+			else
+			{
+				MINO_TYPE buf = keepMino;
+				keepMino = currentMino;
+				currentMino = buf;
+
+				currentAngle = MINO_ANGLE::ANGLE_0;
+				currentPosX = MINO_DEFAULT_POS_X;
+				currentPosY = MINO_DEFAULT_POS_Y;
+
+				keepUseFlag = true;
+			}
+		}
+	}
+
 	//¶ˆÚ“®
 	if (Input::IsKeyDown(KEY_INPUT_A))
 	{
@@ -256,6 +297,7 @@ void Mino::Step()
 	{
 		MinoStop();
 		doujiCount = 0;
+		bool renFlag = false;
 		for (int i = FIELD_SIZE_H - 2; i >= 0; i--)
 		{
 			if (DeleteJudge(i))
@@ -264,11 +306,26 @@ void Mino::Step()
 				i++;
 
 				doujiCount++;
+				if (renFlag == false)
+				{
+					renCount++;
+					renFlag = true;
+				}
 			}
 		}
+		if (renFlag == false)
+		{
+			renCount = 0;
+		}
+		else
+		{
+			Score::AddScore(DEFAULT_SCORE * doujiCount * renCount);
+		}
 
-
-
+		if (keepUseFlag == true)
+		{
+			keepUseFlag = false;
+		}
 		MinoReset();
 
 		if (currentSpeed < DROP_FRAME - 5)
@@ -289,6 +346,8 @@ void Mino::Step()
 
 void Mino::Fin()
 {
+	UI_Number.Fin();
+
 	for (int i = 0; i < (int)MINO_TYPE::KIND_NUM + 1; i++)
 	{
 		DeleteGraph(BlockHandle[i]);
@@ -308,7 +367,7 @@ void Mino::PredictionDraw()
 		{
 			for (int W_index = 0; W_index < MINO_SIZE_W; W_index++)
 			{
-				if (minoShapes[(int)currentMino][(int)currentAngle][W_index][H_index] == true)
+				if (minoShapes[(int)currentMino][(int)currentAngle][H_index][W_index] == true)
 				{
 					SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 					DrawExtendGraph(FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1) * (currentPosX + W_index),
@@ -332,7 +391,7 @@ void Mino::PredictionDraw()
 				{
 					for (int W_index = 0; W_index < MINO_SIZE_W; W_index++)
 					{
-						if (minoShapes[(int)currentMino][(int)currentAngle][W_index][H_index] == true)
+						if (minoShapes[(int)currentMino][(int)currentAngle][H_index][W_index] == true)
 						{
 							SetDrawBlendMode(DX_BLENDMODE_ALPHA, 100);
 							DrawExtendGraph(FIELD_POS_X + (BLOCK_IMAGE_SIZE + 1) * (currentPosX + W_index),
@@ -355,8 +414,39 @@ void Mino::NextDraw()
 {
 	for (int i = 0; i < NEXT_MINO_NUM; i++)
 	{
+		DrawFormatString(NEXT_MINO_POS_X, NEXT_MINO_POS_Y - 50 + NEXT_MINO_OFFSET * i, GetColor(255, 30, 255), "NEXT %d", i + 1);
 		DrawRotaGraph(NEXT_MINO_POS_X, NEXT_MINO_POS_Y + NEXT_MINO_OFFSET * i, 1.0, 0.0, MinoHandle[(int)newMino[i]], true);
 	}
+
+	if (keepMino != MINO_TYPE::TYPE_NONE)
+	{
+		DrawFormatString(NEXT_MINO_POS_X - 700, NEXT_MINO_POS_Y - 50, GetColor(255, 30, 255), "KEEP");
+
+		if (keepUseFlag)
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
+		}
+		else
+		{
+			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 255);
+		}
+		DrawRotaGraph(NEXT_MINO_POS_X - 700, NEXT_MINO_POS_Y, 1.0, 0.0, MinoHandle[(int)keepMino], true);
+
+		SetDrawBlendMode(DX_BLENDMODE_NOBLEND, 0);
+	}
+}
+
+void Mino::UIDraw()
+{
+	if (renCount > 0)
+	{
+		DrawFormatString(NEXT_MINO_POS_X, NEXT_MINO_POS_Y + 350, GetColor(255, 30, 255), "REN");
+		UI_Number.Set_posY(NEXT_MINO_POS_Y + 400);
+		UI_Number.Draw_int(renCount);
+	}
+	DrawFormatString(NEXT_MINO_POS_X, NEXT_MINO_POS_Y + 450, GetColor(255, 30, 255), "SCORE");
+	UI_Number.Set_posY(NEXT_MINO_POS_Y + 500);
+	UI_Number.Draw_int(Score::GetScore());
 }
 
 void Mino::FieldDraw()
@@ -373,7 +463,7 @@ void Mino::FieldDraw()
 	{
 		for (int W_index = 0; W_index < MINO_SIZE_W; W_index++)
 		{
-			if (minoShapes[(int)currentMino][(int)currentAngle][W_index][H_index] == true)
+			if (minoShapes[(int)currentMino][(int)currentAngle][H_index][W_index] == true)
 			{
 				Draw_Buf_field[currentPosX + W_index][currentPosY + H_index] = true;
 				Draw_Buf_field_Mino[currentPosX + W_index][currentPosY + H_index] = currentMino;
@@ -460,6 +550,11 @@ void Mino::MinoReset()
 	currentMino = newMino[NextMinoNum];
 
 	newMino[NextMinoNum] = (MINO_TYPE)(randomer() % (int)MINO_TYPE::KIND_NUM);
+
+	if (MinoHit(currentPosX, currentPosY, currentAngle))
+	{
+		gameOverFlag = true;
+	}
 }
 
 void Mino::MinoStop()
@@ -468,7 +563,11 @@ void Mino::MinoStop()
 	{
 		for (int W_index = 0; W_index < MINO_SIZE_W; W_index++)
 		{
-			if (minoShapes[(int)currentMino][(int)currentAngle][W_index][H_index] == true)
+			if (currentMino == MINO_TYPE::TYPE_S)
+			{
+				int a = 1;
+			}
+			if (minoShapes[(int)currentMino][(int)currentAngle][H_index][W_index] == true)
 			{
 				field[currentPosX + W_index][currentPosY + H_index] = true;
 				field_Mino[currentPosX + W_index][currentPosY + H_index] = currentMino;
@@ -484,7 +583,7 @@ bool Mino::MinoHit(int minoPosX, int minoPosY, MINO_ANGLE minoAngle)
 	{
 		for (int j = 0; j < MINO_SIZE_H; j++)
 		{
-			if (field[minoPosX + i][minoPosY + j] && minoShapes[(int)currentMino][(int)minoAngle][i][j])
+			if (field[minoPosX + i][minoPosY + j] && minoShapes[(int)currentMino][(int)minoAngle][j][i])
 			{
 				return true;
 			}

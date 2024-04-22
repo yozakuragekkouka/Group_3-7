@@ -75,19 +75,19 @@ constexpr char MINO_IMAGE_PATH[(int)MINO_TYPE::KIND_NUM][128] =
     "Data/Block/Tミノ(上 48,32).png",
 };
 
-constexpr char WALL_BLOCK_IMAGE_PATH[128] = "Data/Block/仮テトリス(32).png";
+constexpr char WALL_BLOCK_IMAGE_PATH[128] = "Data/Block/壁ブロック(32).png";
 
-constexpr bool minoShapes[(int)MINO_TYPE::KIND_NUM][(int)MINO_ANGLE::KIND_NUM][MINO_SIZE_W][MINO_SIZE_H] =
+constexpr bool minoShapes[(int)MINO_TYPE::KIND_NUM][(int)MINO_ANGLE::KIND_NUM][MINO_SIZE_H][MINO_SIZE_W] =
 {
-    // TYPE_I
+ // TYPE_I
+{
+    // ANGLE_0
     {
-        // ANGLE_0
-        {
-            0, 1, 0, 0,
-            0, 1, 0, 0,
-            0, 1, 0, 0,
-            0, 1, 0, 0
-        },
+        0, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 1, 0, 0,
+        0, 1, 0, 0
+    },
     // ANGLE_90
     {
         0, 0, 0, 0,
