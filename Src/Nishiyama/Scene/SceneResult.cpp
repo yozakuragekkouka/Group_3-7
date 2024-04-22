@@ -3,7 +3,7 @@
 #include "../Input/Input.h"
 #include "SceneResult.h"
 
-#define BLACK_PATH "Data/Result/”–•”wŒi.png"
+#define BLACK_PATH "Data/Result/”–•”wŒi.png"  //•”wŒi
 #define SCOAE_PATH "Data/Result/ƒXƒRƒA.png"    //ƒXƒRƒA•¶š
 
 ResultInfo result;
@@ -12,7 +12,7 @@ ResultInfo result;
 void SceneResult::Init()
 {
 	result.BlackHandle= LoadGraph(BLACK_PATH);         //•”wŒi‰Šú‰»
-	result.scoae = LoadGraph(SCOAE_PATH);
+	result.scoae = LoadGraph(SCOAE_PATH);              //ƒXƒRƒA•¶š‰Šú‰»
 
 	SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_LOOP_RESULT;
 }
@@ -31,6 +31,7 @@ void SceneResult::Draw()
 {
 	//•”wŒi•`‰æ
 	DrawGraph(0, 0, result.BlackHandle, true);
+	//ƒXƒRƒA•¶š•\¦
 	DrawGraph(500, 200, result.scoae, true);
 
 }

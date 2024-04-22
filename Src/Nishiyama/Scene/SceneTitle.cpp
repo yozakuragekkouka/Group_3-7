@@ -20,7 +20,7 @@
 #define TITLE_O_MINO_PATH "Data/Block/Oミノ(80).png"
 #define TITLE_I_MINO_PATH "Data/Block/Iミノ(40,160).png"
 
-#define SCOAE_PATH "Data/Result/ゲームオーバーフォント.png"    //スコア文字
+
 
 TitleInfo titleInfo;
 PlayRogoInfo playrogoInfo;
@@ -43,8 +43,6 @@ void SceneTitle::Init()
 	titleInfo.PlaySceneFlag = false;                   //PLAYSCENEに行くためのフラグ
 	titleInfo.PlaySceneStopcount = 0;                //PLAYSCENEに行くまでの秒数
 	titleInfo.Titlecount = 0;                        //アクションする秒数(演出)
-
-	titleInfo.scoae= LoadGraph(SCOAE_PATH);
 	//プレイロゴ関連
 	playrogoInfo.PlayrogoHndl = LoadGraph(PLAY_ROGO_PATH);          //PLAYROGO初期化
 	playrogoInfo.Playrogo2Hndl = LoadGraph(PLAY_ROGO2_PATH);         //PLAYROGO2初期化
@@ -165,8 +163,6 @@ void SceneTitle::Draw()
 	if (titleInfo.PlaySceneFlag == false) {
 		playrogoInfo.Playrogocount++;   //カウントを増やす
 	}
-
-	DrawGraph(340, 90, titleInfo.scoae, true);
 
 }
 
