@@ -9,7 +9,7 @@
 //プレイシーン初期化
 void ScenePlay::Init()
 {
-	Score::Init();
+	Score::Init();     //外部シンボルエラー発生
 
 	mino.Init();
 	SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_LOOP_PLAY;
