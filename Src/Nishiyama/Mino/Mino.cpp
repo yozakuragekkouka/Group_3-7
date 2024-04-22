@@ -52,6 +52,8 @@ void Mino::Init()
 	RmoveCount = 0;
 	accelerationCount = 0;
 
+	AddSpeedCount = 0;
+
 	dropCount = 0;
 	stopCount = 0;
 	currentSpeed = 1;
@@ -254,6 +256,20 @@ void Mino::Step()
 			}
 		}
 		MinoReset();
+
+		if (currentSpeed < DROP_FRAME - 5)
+		{
+			AddSpeedCount++;
+			if (AddSpeedCount > 10)
+			{
+				AddSpeedCount = 0;
+				currentSpeed++;
+				if (currentSpeed >= DROP_FRAME - 5)
+				{
+					currentSpeed = DROP_FRAME - 5;
+				}
+			}
+		}
 	}
 }
 

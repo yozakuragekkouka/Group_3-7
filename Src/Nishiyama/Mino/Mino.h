@@ -19,6 +19,8 @@ private:
 	int RmoveCount;
 	int accelerationCount;
 
+	int AddSpeedCount;
+
 	int dropCount;
 	int stopCount;
 	int currentSpeed;
