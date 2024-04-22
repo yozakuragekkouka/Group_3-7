@@ -12,13 +12,4 @@ public:
 
 	static int GetScore() { return score; }
 
-//	static 	void ScoreInit();
-
-//	static 	void Draw();
 };
-//
-////スコア関連構造体
-//struct ScoreInfo
-//{
-//	int numberHundle[10];
-//};

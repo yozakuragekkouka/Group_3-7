@@ -18,6 +18,8 @@ public:
 //ƒŠƒUƒ‹ƒg‰æ–ÊŠÖ˜A
 struct ResultInfo
 {
+	int resultHandle;
 	int BlackHandle;
 	int scoae;
+	int numberHundle[10];
 };
