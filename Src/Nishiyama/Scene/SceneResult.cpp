@@ -1,4 +1,4 @@
-#include "DxLib.h"
+#include "DxLib.h"     //2309405‰F‰ê’Ë’g‹I
 #include "../../Common.h"
 #include "../Input/Input.h"
 #include "SceneResult.h"
