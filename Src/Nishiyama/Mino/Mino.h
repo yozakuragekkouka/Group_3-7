@@ -25,9 +25,13 @@ private:
 	int stopCount;
 	int currentSpeed;
 
+	int renCount;
+	int doujiCount;
+
 	std::random_device randomer;
 
 	int BlockHandle[(int)MINO_TYPE::KIND_NUM + 1];
+	int MinoHandle[(int)MINO_TYPE::KIND_NUM];
 	
 public:
 	~Mino();
@@ -37,6 +41,7 @@ public:
 	void Fin();
 
 	void PredictionDraw();
+	void NextDraw();
 	void FieldDraw();
 
 	void MinoReset();

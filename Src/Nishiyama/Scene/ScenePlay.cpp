@@ -4,10 +4,13 @@
 #include "../../Common.h"
 #include "../Input/Input.h"
 #include "ScenePlay.h"
+#include "../Score/Score.h"
 
 //プレイシーン初期化
 void ScenePlay::Init()
 {
+	Score::Init();
+
 	mino.Init();
 	SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_LOOP_PLAY;
 }
@@ -27,6 +30,8 @@ void ScenePlay::Draw()
 {
 	mino.PredictionDraw();
 	mino.FieldDraw();
+
+	mino.NextDraw();
 }
 
 //プレイシーン後処理

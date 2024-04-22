@@ -58,11 +58,19 @@ void Mino::Init()
 	stopCount = 0;
 	currentSpeed = 1;
 
+	renCount = 0;
+	doujiCount = 0;
+
 	for (int i = 0; i < (int)MINO_TYPE::KIND_NUM; i++)
 	{
 		BlockHandle[i] = LoadGraph(BLOCK_IMAGE_PATH[i]);
 	}
 	BlockHandle[(int)MINO_TYPE::KIND_NUM] = LoadGraph(WALL_BLOCK_IMAGE_PATH);
+
+	for (int i = 0; i < (int)MINO_TYPE::KIND_NUM; i++)
+	{
+		MinoHandle[i] = LoadGraph(MINO_IMAGE_PATH[i]);
+	}
 }
 
 void Mino::Step()
@@ -247,14 +255,20 @@ void Mino::Step()
 	if (stopCount >= STOP_NUM)
 	{
 		MinoStop();
+		doujiCount = 0;
 		for (int i = FIELD_SIZE_H - 2; i >= 0; i--)
 		{
 			if (DeleteJudge(i))
 			{
 				Delete(i);
 				i++;
+
+				doujiCount++;
 			}
 		}
+
+
+
 		MinoReset();
 
 		if (currentSpeed < DROP_FRAME - 5)
@@ -279,6 +293,10 @@ void Mino::Fin()
 	{
 		DeleteGraph(BlockHandle[i]);
 		BlockHandle[i] = NULL;
+	}
+	for (int i = 0; i < (int)MINO_TYPE::KIND_NUM; i++)
+	{
+		DeleteGraph(MinoHandle[i]);
 	}
 }
 
@@ -330,6 +348,14 @@ void Mino::PredictionDraw()
 				break;
 			}
 		}
+	}
+}
+
+void Mino::NextDraw()
+{
+	for (int i = 0; i < NEXT_MINO_NUM; i++)
+	{
+		DrawRotaGraph(NEXT_MINO_POS_X, NEXT_MINO_POS_Y + NEXT_MINO_OFFSET * i, 1.0, 0.0, MinoHandle[(int)newMino[i]], true);
 	}
 }
 
