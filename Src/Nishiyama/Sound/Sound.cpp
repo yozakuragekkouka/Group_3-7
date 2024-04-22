@@ -6,7 +6,7 @@ SE_Data SoundEffect::SE[SE_NUM];
 const char* BGMkind[BGM_NUM] =
 {
 	"Data/Nishiyama/Sound/NONE.mp3",
-	"Data/SE/maou_bgm_8bit15.wav",
+	"Data/BGM/maou_bgm_8bit15.mp3",
 };
 
 const char* SEkind[SE_NUM] =
