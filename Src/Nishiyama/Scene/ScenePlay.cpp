@@ -74,6 +74,7 @@ void ScenePlay::Fin()
 	BG_Image.RectFin();
 	mino.Fin();
 	bgmdata.FinBGM();
+	SoundEffect::Fin();
 	bgmcount = 0;     //–ß‚·
 	SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_INIT_RESULT;
 }

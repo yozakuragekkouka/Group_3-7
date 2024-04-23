@@ -14,8 +14,8 @@ const char* SEkind[SE_NUM] =
 	"Data/Nishiyama/Sound/NONE.mp3.wav",
 	"Data/SE/タイトルロゴ最初.wav",
 	"Data/SE/タイトルロゴ登場時.wav",
-	"Data/SE/ミノ回転or設置用.wav",
-	"Data/SE/ミノ回転用.wav",
+	"Data/SE/ミノ移動用.wav",
+	"Data/SE/ミノ回転.wav",
 	"Data/SE/ミノ設置音用.wav",
 	"Data/SE/決定ボタン用.wav",
 };

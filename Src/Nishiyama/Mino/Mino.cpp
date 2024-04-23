@@ -1,6 +1,7 @@
 #include "../Input/Input.h"
 #include "Mino.h"
 #include "../Score/Score.h"
+#include "../Sound/Sound.h"
 
 Mino::~Mino()
 {
@@ -83,6 +84,7 @@ void Mino::Init()
 	{
 		MinoHandle[i] = LoadGraph(MINO_IMAGE_PATH[i]);
 	}
+	SoundEffect::Init();
 }
 
 void Mino::Step()
@@ -124,6 +126,7 @@ void Mino::Step()
 			if (!MinoHit(currentPosX - 1, currentPosY, currentAngle))
 			{
 				currentPosX--;
+				SoundEffect::Play(SE_MIGRATIONMINO);
 			}
 			LmoveCount = 0;
 		}
@@ -144,6 +147,7 @@ void Mino::Step()
 			if (!MinoHit(currentPosX + 1, currentPosY, currentAngle))
 			{
 				currentPosX++;
+				SoundEffect::Play(SE_MIGRATIONMINO);
 			}
 			RmoveCount = 0;
 		}
@@ -188,6 +192,7 @@ void Mino::Step()
 		if (!MinoHit(currentPosX, currentPosY, (MINO_ANGLE)newAngle))
 		{
 			currentAngle = (MINO_ANGLE)newAngle;
+			SoundEffect::Play(SE_REVOLUTION_MINO);
 		}
 		else
 		{
@@ -202,6 +207,7 @@ void Mino::Step()
 						currentPosY += yMove;
 						currentAngle = (MINO_ANGLE)newAngle;
 
+						SoundEffect::Play(SE_REVOLUTION_MINO);
 						NewAngle_Success = true;
 						break;
 					}
@@ -223,6 +229,7 @@ void Mino::Step()
 		if (!MinoHit(currentPosX, currentPosY, (MINO_ANGLE)newAngle))
 		{
 			currentAngle = (MINO_ANGLE)newAngle;
+			SoundEffect::Play(SE_REVOLUTION_MINO);
 		}
 		else
 		{
@@ -237,6 +244,7 @@ void Mino::Step()
 						currentPosY += yMove;
 						currentAngle = (MINO_ANGLE)newAngle;
 
+						SoundEffect::Play(SE_REVOLUTION_MINO);
 						NewAngle_Success = true;
 						break;
 					}
@@ -296,6 +304,8 @@ void Mino::Step()
 	if (stopCount >= STOP_NUM)
 	{
 		MinoStop();
+		SoundEffect::Play(SE_ESTABLISHMENT_MINO);
+
 		doujiCount = 0;
 		bool renFlag = false;
 		for (int i = FIELD_SIZE_H - 2; i >= 0; i--)
@@ -418,10 +428,9 @@ void Mino::NextDraw()
 		DrawRotaGraph(NEXT_MINO_POS_X, NEXT_MINO_POS_Y + NEXT_MINO_OFFSET * i, 1.0, 0.0, MinoHandle[(int)newMino[i]], true);
 	}
 
+	DrawFormatString(NEXT_MINO_POS_X - 700, NEXT_MINO_POS_Y - 50, GetColor(255, 30, 255), "KEEP");
 	if (keepMino != MINO_TYPE::TYPE_NONE)
 	{
-		DrawFormatString(NEXT_MINO_POS_X - 700, NEXT_MINO_POS_Y - 50, GetColor(255, 30, 255), "KEEP");
-
 		if (keepUseFlag)
 		{
 			SetDrawBlendMode(DX_BLENDMODE_ALPHA, 50);
