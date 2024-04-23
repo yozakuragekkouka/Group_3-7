@@ -9,11 +9,12 @@
 
 //BGM関連
 BGM_Data bgmdata;
-int bgmcount = 0;
 
 //プレイシーン初期化
 void ScenePlay::Init()
 {
+	bgmdata.BGMInit(BGM_PLAY);
+
 	Score::Init();     //外部シンボルエラー発生・・・　※解消済み
 
 	gameOverCount = 0;
@@ -43,10 +44,6 @@ void ScenePlay::Step()
 			}
 		}
 	}
-	if (bgmcount == 0) {
-		bgmdata.BGMInit(BGM_PLAY);  //BGMを流す
-		bgmcount++;   //増やす
-	}
 }
 
 //プレイシーン描画処理
@@ -74,6 +71,5 @@ void ScenePlay::Fin()
 	BG_Image.RectFin();
 	mino.Fin();
 	bgmdata.FinBGM();
-	bgmcount = 0;     //戻す
 	SceneManager::g_CurrenySceneID = SCENEID::SCENE_ID_INIT_RESULT;
 }
